@@ -1,0 +1,32 @@
+POST  http://localhost:1337/add HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "moody3",
+    "bor": "karl3"
+}
+
+
+####
+get http://localhost:1337/items 
+
+#########
+
+get http://localhost:1337/item/61550b0e28bf39d459b51ed1
+
+
+
+### 
+
+PATCH http://localhost:1337/update/61550b0e28bf39d459b51ed1
+Content-Type: application/json
+
+{
+    "name": "muhamed",
+    "bor": "karlskrona"
+}
+
+
+### 
+
+DELETE  http://localhost:1337/delete/61550b88447946627a4e5f86
