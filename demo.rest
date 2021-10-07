@@ -29,4 +29,4 @@ Content-Type: application/json
 
 ### 
 
-DELETE  http://localhost:1337/delete/61550b88447946627a4e5f86
+DELETE  http://localhost:1337/delete/615ef523cd8b1198b193c66b
