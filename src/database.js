@@ -1,6 +1,12 @@
 const mongo = require("mongodb").MongoClient;
-const config = require("./config.json");
+var config;
 const collectionName = "document";
+
+try {
+  config = require("./config.json");
+} catch (e) {
+  console.log(e);
+}
 
 async function getDb() {
   let dsn = `mongodb+srv://${config.username}:${config.password}@cluster0.yzsjx.mongodb.net/${config.database}?retryWrites=true&w=majority`;

@@ -1,11 +1,13 @@
 process.env.NODE_ENV = "test";
 
+const { ObjectId } = require("bson");
 let chai = require("chai");
 let chaiHttp = require("chai-http");
 let server = require("../app");
 
 chai.should();
 chai.use(chaiHttp);
+var id = '';
 
 // get items positive
 describe(" get items positive ", () => {
@@ -16,7 +18,10 @@ describe(" get items positive ", () => {
       .then((err, response) => {
         response.should.have.status(200);
         response.body.should.have.a("array");
-        // response.body.length.should.be.eq(2);
+        for (let item in response.body) {
+          response.body[item].should.be.an("object");
+          id = response.body[0]._id;
+      }
       })
       .catch(function (error) {
         throw error;
@@ -142,7 +147,7 @@ describe("patch item ", () => {
 //   Test Delete route
 describe("delete item", () => {
   it("It should DALETE an item positive", () => {
-    deleteId = "616c68b01435bdc5c837254c";
+    deleteId = id;
     chai
       .request(server)
       .delete("/delete/" + deleteId)

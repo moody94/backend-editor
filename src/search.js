@@ -6,7 +6,7 @@ let db;
   db = await database.getDb();
 
   process.on("exit", () => {
-    db.end();
+    db.client.close();
   });
 })();
 

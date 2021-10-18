@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "nyc mocha 'test/*.js'",
+    "test": "nyc mocha 'test/*.js'  mocha --exit --timeout 10000",
     "start": "node app.js",
     "production1": "SET NODE_ENV='production' & node app.js",
     "production2": "cross-env NODE_ENV='production' & node app.js"
