@@ -13,10 +13,13 @@ describe(" get items positive ", () => {
     chai
       .request(server)
       .get("/items")
-      .end((err, response) => {
+      .then((err, response) => {
         response.should.have.status(200);
         response.body.should.have.a("array");
         // response.body.length.should.be.eq(2);
+      })
+      .catch(function (error) {
+        throw error;
       });
   });
 });
@@ -27,8 +30,11 @@ describe(" get items nigative ", () => {
     chai
       .request(server)
       .get("/itemmm")
-      .end((err, response) => {
+      .then((err, response) => {
         response.should.have.status(404);
+      })
+      .catch(function (error) {
+        throw error;
       });
   });
 });
@@ -40,10 +46,13 @@ describe("get item positive ", () => {
     chai
       .request(server)
       .get("/item/" + id)
-      .end((err, response) => {
+      .then((err, response) => {
         response.should.have.status(200);
-        // response.body.should.have.property("_id");
+        response.body.should.have.property("_id");
         response.body.should.have.property("name");
+      })
+      .catch(function (error) {
+        throw error;
       });
   });
 });
@@ -55,8 +64,11 @@ describe("get item nigative", () => {
     chai
       .request(server)
       .get("/item/" + id)
-      .end((err, response) => {
+      .then((err, response) => {
         response.should.have.status(404);
+      })
+      .catch(function (error) {
+        throw error;
       });
   });
 });
@@ -72,10 +84,13 @@ describe("post item positive", () => {
       .request(server)
       .post("/add")
       .send(newItem)
-      .end((err, response) => {
+      .then((err, response) => {
         response.should.have.status(201);
         response.body.should.have.a("object");
         response.body.should.have.property("acknowledged").eq(true);
+      })
+      .catch(function (error) {
+        throw error;
       });
   });
 });
@@ -90,8 +105,11 @@ describe("post item negative", () => {
       .request(server)
       .post("/adds")
       .send(newItem)
-      .end((err, response) => {
+      .then((err, response) => {
         response.should.have.status(404);
+      })
+      .catch(function (error) {
+        throw error;
       });
   });
 });
@@ -108,12 +126,15 @@ describe("patch item ", () => {
       .request(server)
       .patch("/update/" + updateId)
       .send(newItem)
-      .end((err, response) => {
+      .then((err, response) => {
         response.should.have.status(200);
         response.body.should.have.a("object");
         response.body.should.have.property("acknowledged").eq(true);
         response.body.should.have.property("modifiedCount").eq(1);
         response.body.should.have.property("matchedCount").eq(1);
+      })
+      .catch(function (error) {
+        throw error;
       });
   });
 });
@@ -125,11 +146,12 @@ describe("delete item", () => {
     chai
       .request(server)
       .delete("/delete/" + deleteId)
-
-      .end((err, response) => {
+      .then((err, response) => {
         response.should.have.status(201);
         response.body.should.have.property("deletedCount").eq(1);
-
+      })
+      .catch(function (error) {
+        throw error;
       });
   });
 });
