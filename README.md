@@ -1,0 +1,1 @@
+[![Build Status](https://app.travis-ci.com/moody94/backend-editor.svg?branch=main)](https://app.travis-ci.com/moody94/backend-editor)
