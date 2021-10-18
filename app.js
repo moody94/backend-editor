@@ -29,4 +29,5 @@ if (process.env.NODE_ENV !== "test") {
   app.use(morgan("combined"));
 }
 
-app.listen(port, () => console.log(`Example API listning on port ${port}!`));
+const server = app.listen(port, () => console.log(`Example API listning on port ${port}!`));
+module.exports = server
