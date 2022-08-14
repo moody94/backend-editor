@@ -9,10 +9,10 @@ try {
 }
 
 async function getDb() {
-  let dsn = `mongodb+srv://${config.username}:${config.password}@cluster0.yzsjx.mongodb.net/${config.database}?retryWrites=true&w=majority`;
-  if (process.env.NODE_ENV === "test") {
-    dsn = "mongodb://localhost:27017/editor";
-  }
+  // let dsn = `mongodb+srv://${username}:${password}@cluster0.yzsjx.mongodb.net/${database}?retryWrites=true&w=majority`;
+  dsn = "mongodb://localhost:27017/editor";
+  // if (process.env.NODE_ENV === "test") {
+  // }
   const client = await mongo.connect(dsn, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

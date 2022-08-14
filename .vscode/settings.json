@@ -1,4 +1,0 @@
-{
-    "appService.deploySubpath": ".",
-    "appService.defaultWebAppToDeploy": "/subscriptions/bbf95d72-3576-417b-bd1c-c1f569f98cec/resourceGroups/DIDA-MUAB19-DV1612-H21-LP1/providers/Microsoft.Web/sites/editor--backend--muab19"
-}
