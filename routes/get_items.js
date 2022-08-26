@@ -3,13 +3,74 @@ var express = require("express");
 var router = express.Router();
 const urlencodedParser = express.urlencoded({ extended: true });
 const search = require("../src/search");
+const auth = require("../src/login");
 
-// get All Items
-// try {
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
 
-// } catch {
+// Create A User
+router.post("/signup", urlencodedParser, async (req, res, next) => {
+  let userObj = {
+    username: req.body.username,
+    password: bcrypt.hashSync(req.body.password, 8),
+  };
 
-// }
+  const existedUser = await auth.getUserById({ username: req.body.username });
+
+  if (existedUser) {
+    console.log("This is already exists");
+    console.log(existedUser.name);
+
+    next();
+  } else {
+    const result = await auth.addNewUser(userObj);
+    res.status(200).send(result);
+    console.log("Done");
+  }
+});
+
+router.post("/login", urlencodedParser, async (req, res, next) => {
+  let userObj = {
+    username: req.body.username,
+    password: req.body.password,
+  };
+  try {
+    const existedUser = await auth.getUserById({ username: req.body.username });
+    // next();
+    const isEqual = await bcrypt.compare(
+      userObj.password,
+      existedUser.password
+    );
+
+    if (!isEqual) {
+      console.log("Password is incorrect!");
+      // throw new Error("Password is incorrect!");
+    } else {
+      // redirect("/");
+      console.log("correct!");
+      res.status(200).send({ 'userId': existedUser._id })
+      
+      // res.send(existedUser._id)
+    }
+    const token = jwt.sign(
+      {
+        id: existedUser._id,
+        username: existedUser.username,
+      },
+      "myPlaintextPasswordlongandhardP4$w0rD.",
+      { expiresIn: "24h" }
+    );
+
+    theID = ObjectId(existedUser._id);
+    console.log({ _id: existedUser._id, token: token });
+    return { _id: existedUser._id, token: token };
+
+  } catch {
+    console.log("User does not exist");
+  }
+});
+
+// Get All Items
 router.get("/items", async function (req, res) {
   const ress = await search.getItems("");
   res.status(200).send(ress);
@@ -25,6 +86,7 @@ router.post("/add", urlencodedParser, async function (req, res) {
   var obj = {
     name: req.body.name,
     bor: req.body.bor,
+    userId: req.body.userId
   };
   const result = await search.addItem(obj);
   res.status(201).send(result);
@@ -37,9 +99,8 @@ router.patch("/update/:id", getAnItem, async function (req, res) {
   // res.item.name = req.body.name;
   // res.item.bor = req.body.bor;
   const result = await search.updateItem(res.item, newObj);
-  res.send(result)
+  res.send(result);
 });
-
 
 // delete Item By Id
 router.delete("/delete/:id", getAnItem, async function (req, res) {
