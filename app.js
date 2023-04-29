@@ -4,6 +4,25 @@ const app = express();
 const port = process.env.PORT || 1337;
 const morgan = require("morgan");
 
+
+// import the graphql
+const { graphqlHTTP } = require("express-graphql");
+const {
+  GraphQLSchema
+} = require('graphql')
+
+// get data from database called query 
+// identify data from database (update) called mutation  
+
+
+
+// // create the root file that have the schema defined
+const RootQueryType = require("./graphql/root.js");
+const schema = new GraphQLSchema({
+  query: RootQueryType
+})
+
+
 const http = require("http");
 
 const { Server } = require("socket.io");
@@ -11,6 +30,15 @@ const server = http.createServer(app);
 
 const cors = require("cors");
 app.use(cors());
+
+// use the schema with object with the root /graphql
+
+app.use("/graphql", graphqlHTTP({
+  schema: schema,
+  graphiql: true,
+})
+);
+
 
 const io = new Server(server, {
   cors: {
@@ -34,16 +62,10 @@ app.use(middleWare.middleWare),
   app.use(middleWare.notFoundError),
   app.use(middleWare.errorResult);
 
-// if (process.env.NODE_ENV !== "test") {
-//   app.use(morgan("combined"));
-// }
 
 io.on("connection", function (socket) {
-
-
   socket.on("send_message", (data) => {
     socket.broadcast.emit("receive_message", data);
-
   });
 });
 
