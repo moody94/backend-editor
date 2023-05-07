@@ -1,11 +1,12 @@
 const database = require("../models/database");
-var db;
 const {
     GraphQLObjectType,
     GraphQLString,
     GraphQLNonNull,
     GraphQLList
 } = require('graphql');
+const { getItems } = require("../src/search");
+const { getUsers } = require("../src/login");
 
 DocumentType = new GraphQLObjectType({
     name: 'document',
@@ -14,9 +15,7 @@ DocumentType = new GraphQLObjectType({
         name: { type: GraphQLNonNull(GraphQLString) },
         bor: { type: GraphQLString },
         userId: { type: GraphQLString },
-
-
-
+        _id: { type: GraphQLString },
     })
 })
 
@@ -28,19 +27,11 @@ const RootQueryType = new GraphQLObjectType({
             type: new GraphQLList(DocumentType),
 
             resolve: async () => {
-
-                database.setCollectionName("document");
-                db = await database.getDb();
-                const res = await db.collection.find().toArray();
-                return res;
-
+                const docs = await getItems()
+                return docs  
             }
         },
-
-    })
+    }),
 })
-
-
-
 
 module.exports = RootQueryType;
